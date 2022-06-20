@@ -5,7 +5,6 @@
 
 void char_por_char(char *p) {
     srandom(getpid());
-
     while(*p) {
         putc(*p, stdout);
         fflush(stdout);
@@ -17,11 +16,14 @@ void char_por_char(char *p) {
 
 int main() {
     if(!fork()) {
+      sleep(1);
+      char_por_char("Adios, soy el proceso padre\n");
         if(!fork()) {
+            sleep(1);
             char_por_char("Hola, soy el proceso nieto\n");
         }
     }
-    char_por_char("Adios, soy el proceso padre\n");
+
 
     return 0;
 }
