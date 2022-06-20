@@ -7,7 +7,7 @@ int fd[2];
 
 void coro() {
     while(1) {
-        read(fd[1], line, LINE);
+        read(fd[0], line, LINE);
         printf("%s\n", line);
     }
 }
@@ -21,7 +21,7 @@ int main () {
     while(1) {
         fgets(line, LINE, fin);
         if (feof(fin)) break;
-        write(fd[0], line, LINE);
+        write(fd[1], line, LINE);
         sleep(1);
     }
 
