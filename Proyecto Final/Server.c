@@ -141,42 +141,43 @@ void serve(int s)
 
 int main()
 {
-    int sd, sdo, size, r;
+    int se, se2, size, r;
     struct sockaddr_in sin, pin;
     socklen_t addrlen;
 
     
-    sd = socket(AF_INET, SOCK_STREAM, 0);
+    se = socket(AF_INET, SOCK_STREAM, 0);
 
     memset(&sin, 0, sizeof(sin));
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(puerto);
 
-    r = bind(sd, (struct sockaddr *)&sin, sizeof(sin));
+    r = bind(se, (struct sockaddr *)&sin, sizeof(sin));
     if (r < 0)
     {
         perror("bind");
         return -1;
     }
-    listen(sd, 5);
+    listen(se, 5);
 
     addrlen = sizeof(pin);
 
-    while ((sdo = accept(sd, (struct sockaddr *)&pin, &addrlen)) > 0)
+    while ((se2 = accept(se, (struct sockaddr *)&pin, &addrlen)) > 0)
     {
         if (!fork())
         {
             printf("Connected from %s\n", inet_ntoa(pin.sin_addr));
             printf("Port %d\n", ntohs(pin.sin_port));
 
-            serve(sdo);
+            serve(se2);
 
-            close(sdo);
+            close(se2);
             exit(0);
         }
     }
-    close(sd);
+
+    close(se);
 
     sleep(1);
 }
